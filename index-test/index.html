@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>NodeJS WebSocket Server</title>
+    <link rel="stylesheet" href="https://cdn.statically.io/gh/yehezkielermanto/library-xterm/main/xterm.min.css" />
+</head>
+<body>
+	<h1>Hello world</h1>
+    <button id="click">click Terminal</button>
+    <div id="terminal"></div>
+    <script src="https://cdn.statically.io/gh/yehezkielermanto/library-xterm/main/xterm.min.js"></script>
+    <script src="https://cdn.statically.io/gh/yehezkielermanto/library-xterm/main/attach.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+
+        var term = new Terminal({ cols: 80, rows: 24 });
+        term.open(document.getElementById('terminal'));
+        
+        $('#click').on('click', function(){
+            let data = {
+                language:'py',
+                code: 'print("lorem ipsum12345")'
+            }
+            $.ajax({
+                url:'http://192.168.1.10:3000/',
+                type: 'POST',
+                data: data,
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                success: function(response){
+                    console.log(response)
+                    $.ajax({
+                        url: 'http://192.168.1.10:8080/execute',
+                        type: 'POST',
+                        data: {
+                            commands: response.command.executeCodeCommand,
+                            filePath: response.command.executionArgs[0]
+                        },
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        success: function(response){
+                            const ws = new WebSocket("ws://192.168.1.10:8080/");
+                            
+                            term.clear()
+                            
+                            ws.addEventListener("open", () =>{
+                                console.log("We are connected");
+                                //   ws.send("How are you?");
+                                new attach.attach(term, ws);
+                            });
+    
+                            ws.addEventListener('message', function (event) {
+                                console.log(event.data);
+                                // ws.send(event.data)
+                            });
+                        }
+    
+                    })
+                }
+                
+            })
+        })
+
+    </script>
+</body>
+</html>
