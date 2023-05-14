@@ -68,7 +68,7 @@ app.listen(port, function(){
     // spawning child process (node in node) 🤯️
         const child = spawn("node", ['index.js'], {
             // file path for child process
-            cwd: '../runner-test'
+            cwd: 'runner-test'
         })
 
 

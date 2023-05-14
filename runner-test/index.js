@@ -14,6 +14,10 @@ const port = 8080
 let commands = ""
 let filePaths = ""
 
+app.get('/', (req,res) => {
+   res.status(200).send(`server in port ${port} is now working 💪`)
+})
+
 app.use(function (req, res, next) {
    // console.log('middleware');
    // assign value from request body
