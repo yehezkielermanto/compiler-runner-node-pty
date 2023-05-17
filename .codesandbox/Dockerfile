@@ -24,11 +24,11 @@ ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 # RUN nvm install 16.13.2
 
 WORKDIR /app
-COPY . /app
+# COPY . /app
 
-RUN cd runner-test && npm install
-RUN cd compiler && npm install
+# RUN cd runner-test && npm install
+# RUN cd compiler && npm install
 
 
 EXPOSE 3000 8080
-CMD ["node", "compiler/src/index.js"]
+# CMD ["node", "compiler/src/index.js"]

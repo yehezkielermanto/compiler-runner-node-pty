@@ -1,0 +1,22 @@
+{
+  // These tasks will run in order when initializing your CodeSandbox project.
+  "setupTasks": [
+    {
+      "name": "install dependencies",
+      "command": "cd ./compiler && npm install"
+    },
+    {
+      "name": "install dependencies",
+      "command": "cd ./runner-test && npm install"
+    }
+  ],
+
+  // These tasks can be run from CodeSandbox. Running one will open a log in the app.
+  "tasks": {
+    "start": {
+      "name": "start",
+      "command": "node ./compiler/src/index.js",
+      "runAtStart": true
+    }
+  }
+}
